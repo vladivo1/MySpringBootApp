@@ -38,7 +38,7 @@ public class DriverController {
     @ResponseStatus(HttpStatus.OK)
     public Driver getDriverById (@PathVariable Integer id) {
         Driver driver = driverRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("City not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Driver not found with id " + id));
         return driver;
     }
 
@@ -75,14 +75,14 @@ public class DriverController {
                     entity.setDriverExp(driver.getDriverExp());
                     return driverRepository.save(entity);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("City not found with id = " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Driver not found with id = " + id));
     }
 
     @DeleteMapping("/deleteDriverById/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeDriverById (@PathVariable Integer id) {
         Driver driver = driverRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("City not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Driver not found with id " + id));
         driverRepository.delete(driver);
 
     }
