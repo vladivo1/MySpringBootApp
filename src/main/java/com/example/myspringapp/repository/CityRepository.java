@@ -1,7 +1,7 @@
 package com.example.myspringapp.repository;
 
 
-import com.example.myspringapp.object.City;
+import com.example.myspringapp.domain.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

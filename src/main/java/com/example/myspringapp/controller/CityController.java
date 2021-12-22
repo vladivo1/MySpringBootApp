@@ -1,6 +1,6 @@
 package com.example.myspringapp.controller;
 
-import com.example.myspringapp.object.City;
+import com.example.myspringapp.domain.City;
 import com.example.myspringapp.repository.CityRepository;
 import com.example.myspringapp.service.CityService;
 import org.springframework.http.HttpStatus;

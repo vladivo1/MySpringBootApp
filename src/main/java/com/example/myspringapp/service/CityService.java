@@ -1,6 +1,6 @@
 package com.example.myspringapp.service;
 
-import com.example.myspringapp.object.City;
+import com.example.myspringapp.domain.City;
 import com.example.myspringapp.repository.CityRepository;
 import org.springframework.stereotype.Service;
 

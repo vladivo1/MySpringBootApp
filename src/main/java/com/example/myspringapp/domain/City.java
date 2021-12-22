@@ -1,4 +1,4 @@
-package com.example.myspringapp.object;
+package com.example.myspringapp.domain;
 
 import javax.persistence.*;
 
