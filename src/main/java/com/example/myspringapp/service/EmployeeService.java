@@ -1,7 +1,6 @@
 package com.example.myspringapp.service;
 
 import com.example.myspringapp.domain.Employee;
-import com.example.myspringapp.domain.Smartphone;
 import com.example.myspringapp.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 

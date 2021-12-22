@@ -1,6 +1,5 @@
 package com.example.myspringapp.controller;
 
-import com.example.myspringapp.domain.City;
 import com.example.myspringapp.domain.Smartphone;
 import com.example.myspringapp.repository.SmartphoneRepository;
 import com.example.myspringapp.service.SmartphoneService;
