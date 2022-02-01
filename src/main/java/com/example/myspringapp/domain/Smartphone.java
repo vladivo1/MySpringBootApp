@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Smartphone {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "smartphone_id")
     private Integer id;
     @Column(name = "SMARTPHONE_BRAND")

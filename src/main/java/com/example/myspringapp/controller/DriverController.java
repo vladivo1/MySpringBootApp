@@ -1,95 +1,84 @@
 package com.example.myspringapp.controller;
 
 import com.example.myspringapp.domain.Driver;
-import com.example.myspringapp.repository.DriverRepository;
 import com.example.myspringapp.service.DriverService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DriverController {
 
-    private DriverRepository driverRepository;
-    private DriverService driverService;
-    public DriverController (DriverRepository driverRepository, DriverService driverService) {
-        this.driverRepository = driverRepository;
+
+    private final DriverService driverService;
+
+    public DriverController(DriverService driverService) {
         this.driverService = driverService;
     }
 
 
-    @PostMapping("/saveDriver")
+    @PostMapping("/drivers")
     @ResponseStatus(HttpStatus.CREATED)
-    public Driver saveDriver (@RequestBody Driver driver) {
-        return driverRepository.save(driver);
+    public Driver saveDriver(@RequestBody Driver driver) {
+        return driverService.saveDriver(driver);
     }
 
-    @GetMapping("/getAllDrivers")
+    @GetMapping("/drivers")
     @ResponseStatus(HttpStatus.OK)
-    public List<Driver> getAllDrivers () {
-        return driverRepository.findAll();
+    public List<Driver> getAllDrivers() {
+        return driverService.getAllDrivers();
     }
 
-    @GetMapping("/getDriverById/{id}")
+    @GetMapping("/drivers/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Driver getDriverById (@PathVariable Integer id) {
-        Driver driver = driverRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Driver not found with id " + id));
-        return driver;
+    public Driver getDriverById(@PathVariable Integer id) {
+        return driverService.getDriverById(id);
     }
 
-    @GetMapping("/getDriverByName/{firstName}")
+    @GetMapping("/drivers/name/{firstName}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Driver> getDriverByName( @PathVariable String firstName) {
+    public List<Driver> getDriverByName(@PathVariable String firstName) {
         return driverService.getAllDriversByFirstName(firstName);
     }
 
-    @GetMapping("/getDriverByLastName/{lastName}")
+    @GetMapping("/drivers/lastname/{lastName}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Driver> getDriverByLastName( @PathVariable String lastName) {
+    public List<Driver> getDriverByLastName(@PathVariable String lastName) {
         return driverService.getAllDriversByLastName(lastName);
     }
-    @GetMapping("/getDriverByCategory/{category}")
+
+    @GetMapping("/drivers/category/{category}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Driver> getDriverByCategory( @PathVariable String category) {
+    public List<Driver> getDriverByCategory(@PathVariable String category) {
         return driverService.getAllDriversByCategory(category);
     }
-    @GetMapping("/getDriverByDriversExp/{driverExp}")
+
+    @GetMapping("/drivers/experience/{experience}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Driver> getDriverByDriverExp( @PathVariable String driverExp) {
-        return driverService.getAllDriversByDriverExp(driverExp);
+    public List<Driver> getDriverByDriverExp(@PathVariable String experience) {
+        return driverService.getAllDriversByDriverExp(experience);
     }
 
-    @PutMapping("/updateDriverById/{id}")
+    @PutMapping("/drivers/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Driver updateDriver (@PathVariable ("id") Integer id, @RequestBody Driver driver) {
-        return driverRepository.findById(id)
-                .map(entity ->{
-                    entity.setFirstName(driver.getFirstName());
-                    entity.setLastName(driver.getLastName());
-                    entity.setCategory(driver.getCategory());
-                    entity.setDriverExp(driver.getDriverExp());
-                    return driverRepository.save(entity);
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Driver not found with id = " + id));
+    public Driver updateDriver(@PathVariable("id") Integer id, @RequestBody Driver driver) {
+        return driverService.updateDriver(id, driver);
     }
 
-    @DeleteMapping("/deleteDriverById/{id}")
+    @DeleteMapping("/drivers/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeDriverById (@PathVariable Integer id) {
-        Driver driver = driverRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Driver not found with id " + id));
-        driverRepository.delete(driver);
+    public void removeDriverById(@PathVariable Integer id) {
+        driverService.removeDriverById(id);
 
     }
-    @DeleteMapping("/deleteAllDrivers")
+
+    @DeleteMapping("/drivers")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAllDrivers() {
-        driverRepository.deleteAll();
+        driverService.deleteAllDrivers();
     }
 
 }

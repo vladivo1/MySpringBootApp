@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Driver {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "driver_id", insertable = false, updatable = false)
     private Integer id;
 

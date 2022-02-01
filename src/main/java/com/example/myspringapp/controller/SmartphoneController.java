@@ -1,91 +1,75 @@
 package com.example.myspringapp.controller;
 
 import com.example.myspringapp.domain.Smartphone;
-import com.example.myspringapp.repository.SmartphoneRepository;
 import com.example.myspringapp.service.SmartphoneService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SmartphoneController {
 
-    private SmartphoneRepository smartphoneRepository;
-    private SmartphoneService smartphoneService;
-    public SmartphoneController(SmartphoneRepository smartphoneRepository, SmartphoneService smartphoneService) {
-        this.smartphoneRepository = smartphoneRepository;
+    private final SmartphoneService smartphoneService;
+
+    public SmartphoneController(SmartphoneService smartphoneService) {
         this.smartphoneService = smartphoneService;
     }
 
-    @PostMapping("/saveSmartphone")
+    @PostMapping("/smartphones")
     @ResponseStatus(HttpStatus.CREATED)
-    public Smartphone saveSmartphone (@RequestBody Smartphone smartphone) {
-        return smartphoneRepository.save(smartphone);
+    public Smartphone saveSmartphone(@RequestBody Smartphone smartphone) {
+        return smartphoneService.saveSmartphone(smartphone);
     }
 
-    @GetMapping("/getAllSmartphone")
+    @GetMapping("/smartphones")
     @ResponseStatus(HttpStatus.OK)
-    public List<Smartphone> getAllSmartphone () {
-        return smartphoneRepository.findAll();
+    public List<Smartphone> getAllSmartphone() {
+        return smartphoneService.getAllSmartphone();
     }
 
-    @GetMapping("/getSmartphoneById/{id}")
+    @GetMapping("/smartphones/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Smartphone getSmartphoneById (@PathVariable Integer id) {
-        Smartphone smartphone = smartphoneRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Smartphone not found with id " + id));
-        return smartphone;
+    public Smartphone getSmartphoneById(@PathVariable Integer id) {
+        return smartphoneService.getSmartphoneById(id);
     }
 
-    @GetMapping("/getSmartphoneByBrand/{brand}")
+    @GetMapping("/smartphones/brand/{brand}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Smartphone> getSmartphoneByBrand( @PathVariable String brand) {
+    public List<Smartphone> getSmartphoneByBrand(@PathVariable String brand) {
         return smartphoneService.findAllByBrand(brand);
     }
 
-    @GetMapping("/getSmartphoneByOs/{os}")
+    @GetMapping("/smartphones/os/{os}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Smartphone> getSmartphoneByOs( @PathVariable String os) {
+    public List<Smartphone> getSmartphoneByOs(@PathVariable String os) {
         return smartphoneService.findAllByOs(os);
     }
 
-    @GetMapping("/getSmartphoneByModel/{model}")
+    @GetMapping("/smartphones/model/{model}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Smartphone> getSmartphoneByModel( @PathVariable String model) {
+    public List<Smartphone> getSmartphoneByModel(@PathVariable String model) {
         return smartphoneService.findAllByModel(model);
     }
 
-    @PutMapping("/updateSmartphoneById/{id}")
+    @PutMapping("/smartphones/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Smartphone updateSmartphone (@PathVariable ("id") Integer id, @RequestBody Smartphone smartphone) {
-        return smartphoneRepository.findById(id)
-                .map(entity ->{
-                    entity.setBrand(smartphone.getBrand());
-                    entity.setModel(smartphone.getModel());
-                    entity.setOs(smartphone.getOs());;
-                    return smartphoneRepository.save(entity);
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Smartphone not found with id = " + id));
+    public Smartphone updateSmartphone(@PathVariable("id") Integer id, @RequestBody Smartphone smartphone) {
+        return smartphoneService.updateSmartphone(id, smartphone);
     }
 
-    @DeleteMapping("/deleteSmartphoneById/{id}")
+    @DeleteMapping("/smartphones/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeSmartphoneById (@PathVariable Integer id) {
-        Smartphone smartphone = smartphoneRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("City not found with id " + id));
-        smartphoneRepository.delete(smartphone);
+    public void removeSmartphoneById(@PathVariable Integer id) {
+        smartphoneService.removeSmartphoneById(id);
 
     }
-    @DeleteMapping("/deleteAllSmartphone")
+
+    @DeleteMapping("/smartphones")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAllSmartphone() {
-        smartphoneRepository.deleteAll();
+        smartphoneService.deleteAllSmartphone();
     }
-
-
 
 }
