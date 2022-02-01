@@ -1,9 +1,16 @@
 package com.example.myspringapp.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "DRIVERS")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Driver {
 
     @Id
@@ -20,43 +27,5 @@ public class Driver {
     @Column(name = "DRIVER_EXPERIENCE")
     private String driverExp;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDriverExp() {
-        return driverExp;
-    }
-
-    public void setDriverExp(String driverExp) {
-        this.driverExp = driverExp;
-    }
 }

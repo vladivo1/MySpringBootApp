@@ -1,9 +1,16 @@
 package com.example.myspringapp.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "SMARTPHONES")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Smartphone {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -16,35 +23,4 @@ public class Smartphone {
     @Column(name = "SMARTPHONE_MODEL")
     private String model;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getOs() {
-        return os;
-    }
-
-    public void setOs(String os) {
-        this.os = os;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
 }
