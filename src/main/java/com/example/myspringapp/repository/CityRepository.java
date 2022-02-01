@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface CityRepository extends JpaRepository<City,Integer> {
 
-    public List<City> findAllByCity(String city);
+    List<City> findAllByCity(String city);
 
-    public List<City> findAllByCountry(String country);
+    List<City> findAllByCountry(String country);
 
-    public List<City> findAllByRegion(String region);
+    List<City> findAllByRegion(String region);
 
 }

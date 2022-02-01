@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee,Integer> {
 
-    public List<Employee> findAllByName(String name);
+    List<Employee> findAllByName(String name);
 
-    public List<Employee> findAllByCountry(String country);
+    List<Employee> findAllByCountry(String country);
 
-    public List<Employee> findAllByEmail(String email);
+    List<Employee> findAllByEmail(String email);
 }

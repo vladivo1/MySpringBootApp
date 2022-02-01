@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface SmartphoneRepository extends JpaRepository<Smartphone,Integer> {
 
-    public List<Smartphone> findAllByModel(String model);
+    List<Smartphone> findAllByModel(String model);
 
-    public List<Smartphone> findAllByOs(String os);
+    List<Smartphone> findAllByOs(String os);
 
-    public List<Smartphone> findAllByBrand(String brand);
+    List<Smartphone> findAllByBrand(String brand);
 }
