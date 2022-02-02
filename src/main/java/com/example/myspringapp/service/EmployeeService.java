@@ -5,7 +5,6 @@ import com.example.myspringapp.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -23,10 +22,9 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-
-    public Optional<Employee> getEmployeeById(Integer id) {
-       return employeeRepository.findById(id);
-
+    public Employee getEmployeeById(Integer id) {
+       return employeeRepository.findById(id)
+               .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
     }
 
     public Employee refreshEmployee(Integer id, Employee employee) {

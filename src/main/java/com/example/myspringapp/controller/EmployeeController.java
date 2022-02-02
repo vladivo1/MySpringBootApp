@@ -1,12 +1,14 @@
 package com.example.myspringapp.controller;
 
 import com.example.myspringapp.domain.Employee;
+import com.example.myspringapp.dto.EmployeeDto;
+import com.example.myspringapp.mapper.EmployeeMapper;
 import com.example.myspringapp.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -19,60 +21,63 @@ public class EmployeeController {
     }
 
     @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Employee saveEmployee(@RequestBody Employee employee) {
-        return employeeService.saveEmployee(employee);
+    public ResponseEntity<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto) {
+        Employee employee = EmployeeMapper.INSTANCE.employeeDtoToEmployee(employeeDto);
+        employeeService.saveEmployee(employee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeDto);
     }
-
 
     @GetMapping("/users")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getAllUsers() {
-        return employeeService.getAllUsers();
+    public ResponseEntity <List<EmployeeDto>> getAllUsers() {
+        List <EmployeeDto> employeeDtoList =
+                EmployeeMapper.INSTANCE.employeeToDtos(employeeService.getAllUsers());
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDtoList);
     }
 
-
     @GetMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Optional<Employee> getEmployeeById(@PathVariable Integer id) {
-        return employeeService.getEmployeeById(id);
+    public ResponseEntity <EmployeeDto> getEmployeeById(@PathVariable Integer id) {
+        EmployeeDto employeeDto = EmployeeMapper
+                .INSTANCE.employeeToDto(employeeService.getEmployeeById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDto);
     }
 
     @GetMapping("/users/name/{name}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getEmployeeByName(@PathVariable String name) {
-        return employeeService.findAllByName(name);
+    public  ResponseEntity <List<EmployeeDto>> getEmployeeByName(@PathVariable String name) {
+        List <EmployeeDto> employeeDtoList = EmployeeMapper
+                .INSTANCE.employeeToDtos(employeeService.findAllByName(name));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDtoList);
     }
 
     @GetMapping("/users/country/{country}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getEmployeeByCountry(@PathVariable String country) {
-        return employeeService.findAllByCountry(country);
+    public ResponseEntity <List<EmployeeDto>> getEmployeeByCountry(@PathVariable String country) {
+        List <EmployeeDto> employeeDtoList = EmployeeMapper
+                .INSTANCE.employeeToDtos(employeeService.findAllByCountry(country));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDtoList);
     }
 
     @GetMapping("/users/email/{email}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getEmployeeByEmail(@PathVariable String email) {
-        return employeeService.findAllByEmail(email);
+    public  ResponseEntity <List<EmployeeDto>> getEmployeeByEmail(@PathVariable String email) {
+        List <EmployeeDto> employeeDtoList = EmployeeMapper
+                .INSTANCE.employeeToDtos(employeeService.findAllByEmail(email));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDtoList);
     }
 
-
     @PutMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Employee refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-        return employeeService.refreshEmployee(id, employee);
+    public  ResponseEntity <EmployeeDto> refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
+        EmployeeDto employeeDto = EmployeeMapper
+                .INSTANCE.employeeToDto(employeeService.refreshEmployee(id, employee));
+        return ResponseEntity.status(HttpStatus.OK).body(employeeDto);
     }
 
     @DeleteMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeEmployeeById(@PathVariable Integer id) {
+    public ResponseEntity<String> removeEmployeeById(@PathVariable Integer id) {
         employeeService.removeEmployeeById(id);
-
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Employee with id : " + id + " deleted");
     }
 
     @DeleteMapping("/users")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeAllUsers() {
+    public ResponseEntity<String> removeAllUsers() {
         employeeService.removeAllUsers();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("All employee deleted");
     }
 }
