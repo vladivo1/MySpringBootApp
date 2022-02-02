@@ -1,9 +1,12 @@
 package com.example.myspringapp.controller;
 
 import com.example.myspringapp.domain.Car;
+import com.example.myspringapp.dto.CarDto;
 import com.example.myspringapp.service.CarService;
+import com.example.myspringapp.mapper.CarMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,63 +16,64 @@ import java.util.List;
 public class CarController {
 
     private final CarService carService;
-
     public CarController(CarService carService) {
         this.carService = carService;
     }
 
     @PostMapping("/cars")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Car saveCar(@RequestBody Car car) {
-        return carService.saveCar(car);
+    public ResponseEntity<CarDto> saveCar(@RequestBody CarDto carDto) {
+        Car car = CarMapper.INSTANCE.CarDtoToCar(carDto);
+        carService.saveCar(car);
+        return ResponseEntity.status(HttpStatus.CREATED).body(carDto);
     }
 
     @GetMapping("/cars")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Car> getAllCars() {
-        return carService.getAllCars();
+    public ResponseEntity<List<CarDto>> getAllCars() {
+       List<CarDto>  carDtoList = CarMapper.INSTANCE.CarToCarDtos(carService.getAllCars());
+       return ResponseEntity.status(HttpStatus.OK).body(carDtoList);
     }
 
-    @GetMapping("/car/id/{car_id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Car getCarById(@PathVariable Integer car_id) {
-        return carService.getCarById(car_id);
+    @GetMapping("/cars/id/{car_id}")
+    public ResponseEntity<CarDto> getCarById(@PathVariable Integer car_id) {
+        CarDto carDto = CarMapper.INSTANCE.CarToCarDto(carService.getCarById(car_id));
+        return ResponseEntity.status(HttpStatus.OK).body(carDto);
     }
 
     @GetMapping("/cars/model/{model}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Car> getAllCarsByModel(@PathVariable String model) {
-        return carService.getCarByModel(model);
+    public ResponseEntity <List<CarDto>> getAllCarsByModel(@PathVariable String model) {
+       List <CarDto> carsDtoList = CarMapper.INSTANCE.CarToCarDtos(carService.getCarByModel(model));
+       return ResponseEntity.status(HttpStatus.OK).body(carsDtoList);
     }
 
     @GetMapping("/cars/brand/{brand}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Car> getAllCarsByBrand(@PathVariable String brand) {
-        return carService.getCarByBrand(brand);
+    public ResponseEntity <List<CarDto>> getAllCarsByBrand(@PathVariable String brand) {
+        List <CarDto> carDtoList = CarMapper.INSTANCE.CarToCarDtos(carService.getCarByBrand(brand));
+        return ResponseEntity.status(HttpStatus.OK).body(carDtoList);
     }
 
     @GetMapping("/cars/type/{type}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Car> getAllCarsByType(@PathVariable String type) {
-        return carService.getCarByType(type);
+    public  ResponseEntity <List<CarDto>> getAllCarsByType(@PathVariable String type) {
+        List<CarDto> carDtoList = CarMapper.INSTANCE.CarToCarDtos(carService.getCarByType(type));
+        return ResponseEntity.status(HttpStatus.OK).body(carDtoList);
     }
 
     @PutMapping("/cars/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Car updateCar(@PathVariable("id") Integer id, @RequestBody Car car) {
-        return carService.updateCar(id, car);
+    public ResponseEntity<CarDto> updateCar(@PathVariable("id") Integer id, @RequestBody Car car) {
+       CarDto carDto = CarMapper.INSTANCE.CarToCarDto(carService.updateCar(id, car));
+       return ResponseEntity.status(HttpStatus.OK).body(carDto);
     }
 
     @DeleteMapping("/cars/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCarById(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteCarById(@PathVariable Integer id) {
         carService.deleteCarById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Car with id : " + id + "deleted");
     }
 
     @DeleteMapping("/cars")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAllCities() {
+    public ResponseEntity<String> deleteAllCities() {
         carService.deleteAllCars();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("All cars deleted!");
+
     }
 
 }
