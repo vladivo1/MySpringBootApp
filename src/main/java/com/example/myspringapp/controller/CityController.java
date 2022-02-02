@@ -1,9 +1,12 @@
 package com.example.myspringapp.controller;
 
 import com.example.myspringapp.domain.City;
+import com.example.myspringapp.dto.CityDto;
+import com.example.myspringapp.mapper.CityMapper;
 import com.example.myspringapp.service.CityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,65 +17,64 @@ public class CityController {
 
 
     private final CityService cityService;
-
     public CityController(CityService service) {
         this.cityService = service;
     }
 
     @PostMapping("/cities")
-    @ResponseStatus(HttpStatus.CREATED)
-    public City saveCity(@RequestBody City city) {
-        return cityService.saveCity(city);
+    public ResponseEntity<CityDto> saveCity(@RequestBody CityDto cityDto) {
+        City city = CityMapper.INSTANCE.cityDtoToCity(cityDto);
+        cityService.saveCity(city);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cityDto);
     }
 
     @GetMapping("/cities")
-    @ResponseStatus(HttpStatus.OK)
-    public List<City> getAllCity() {
-        return cityService.getAllCity();
+    public ResponseEntity <List<CityDto>> getAllCity() {
+        List <CityDto> cityDto = CityMapper.INSTANCE.cityToDtos(cityService.getAllCity());
+        return ResponseEntity.status(HttpStatus.OK).body(cityDto);
     }
 
     @GetMapping("/city/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public City getCityById(@PathVariable Integer id) {
-        return cityService.getCityById(id);
+    public ResponseEntity<CityDto> getCityById(@PathVariable Integer id) {
+        CityDto cityDto = CityMapper.INSTANCE.cityToDto(cityService.getCityById(id));
+        return  ResponseEntity.status(HttpStatus.OK).body(cityDto);
 
     }
 
     @GetMapping("/cities/name/{city}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<City> getCityByName(@PathVariable String city) {
-        return cityService.getCityByName(city);
+    public ResponseEntity <List<CityDto>> getCityByName(@PathVariable String city) {
+       List <CityDto> cityDtoList = CityMapper.INSTANCE.cityToDtos(cityService.getCityByName(city));
+       return ResponseEntity.status(HttpStatus.OK).body(cityDtoList);
     }
 
     @GetMapping("/cities/country/{country}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<City> getCityByCountry(@PathVariable String country) {
-        return cityService.getCityByCountry(country);
+    public ResponseEntity <List<CityDto>> getCityByCountry(@PathVariable String country) {
+        List <CityDto> cityDtoList = CityMapper.INSTANCE.cityToDtos(cityService.getCityByCountry(country));
+        return ResponseEntity.status(HttpStatus.OK).body(cityDtoList);
     }
 
     @GetMapping("/cities/region/{region}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<City> getCityByRegion(@PathVariable String region) {
-        return cityService.getCityByRegion(region);
+    public ResponseEntity <List<CityDto>> getCityByRegion(@PathVariable String region) {
+        List <CityDto> cityDtoList = CityMapper.INSTANCE.cityToDtos(cityService.getCityByRegion(region));
+        return ResponseEntity.status(HttpStatus.OK).body(cityDtoList);
     }
 
     @PutMapping("/cities/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public City updateCity(@PathVariable("id") Integer id, @RequestBody City city) {
-        return cityService.updateCity(id, city);
+    public ResponseEntity <CityDto> updateCity(@PathVariable("id") Integer id, @RequestBody City city) {
+       CityDto cityDto = CityMapper.INSTANCE.cityToDto(cityService.updateCity(id,city));
+       return ResponseEntity.status(HttpStatus.OK).body(cityDto);
     }
 
     @DeleteMapping("/cities/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCityById(@PathVariable Integer id) {
+    public ResponseEntity<String> removeCityById(@PathVariable Integer id) {
         cityService.removeCityById(id);
-
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("City with id : " + id + " deleted");
     }
 
     @DeleteMapping("/cities")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAllCities() {
+    public ResponseEntity<String> deleteAllCities() {
         cityService.deleteAllCities();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("All cities deleted!");
     }
 
 
