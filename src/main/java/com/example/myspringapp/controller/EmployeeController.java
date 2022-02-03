@@ -4,12 +4,14 @@ import com.example.myspringapp.domain.Employee;
 import com.example.myspringapp.dto.EmployeeDto;
 import com.example.myspringapp.mapper.EmployeeMapper;
 import com.example.myspringapp.service.EmployeeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Tag(name = "Employee Controller", description = "The Employee API")
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {

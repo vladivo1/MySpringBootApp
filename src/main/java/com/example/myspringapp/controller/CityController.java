@@ -4,13 +4,14 @@ import com.example.myspringapp.domain.City;
 import com.example.myspringapp.dto.CityDto;
 import com.example.myspringapp.mapper.CityMapper;
 import com.example.myspringapp.service.CityService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "City Controller", description = "The City API")
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CityController {

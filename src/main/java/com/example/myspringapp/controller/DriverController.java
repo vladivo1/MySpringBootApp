@@ -4,13 +4,14 @@ import com.example.myspringapp.domain.Driver;
 import com.example.myspringapp.dto.DriverDto;
 import com.example.myspringapp.mapper.DriverMapper;
 import com.example.myspringapp.service.DriverService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Driver Controller", description = "The Driver API")
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DriverController {

@@ -4,13 +4,15 @@ import com.example.myspringapp.domain.Car;
 import com.example.myspringapp.dto.CarDto;
 import com.example.myspringapp.service.CarService;
 import com.example.myspringapp.mapper.CarMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+@Tag(name = "Car Controller", description = "The Car API")
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CarController {
@@ -27,6 +29,7 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.CREATED).body(carDto);
     }
 
+    @Operation(summary = "Get all cars")
     @GetMapping("/cars")
     public ResponseEntity<List<CarDto>> getAllCars() {
        List<CarDto>  carDtoList = CarMapper.INSTANCE.CarToCarDtos(carService.getAllCars());
